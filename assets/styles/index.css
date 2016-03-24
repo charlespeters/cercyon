@@ -1,0 +1,6 @@
+@import 'obsidian.css';
+@import 'gradients';
+
+:root {
+  --headlines: 'Avenir', sans-serif;
+}
