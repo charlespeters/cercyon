@@ -1,11 +1,20 @@
 const paths = {
-  views: './views/',
-  viewSrc: './views/**/*.hbs',
-  partials: './views/components/',
   build: './dist',
-  img: './assets/images/**/*',
-  cssLib: './assets/styles/**/*.css',
-  cssSrc: './assets/styles/index.css',
+  img: {
+    src: './assets/images/**/*',
+    dest: './dist/assets/images/'
+  },
+  views: {
+    components: './views/components/',
+    src: './views/**/*.hbs',
+    ignore: '!./views/components/*.hbs',
+    all: ['./views/**/*.hbs', './views/components/*']
+  },
+  css: {
+    src: './assets/styles/index.css',
+    all: './assets/styles/**/*.css',
+    dest: './dist/assets/styles/'
+  },
   js: {
     src: './assets/scripts/global.js',
     all: './assets/scripts/**/*.js',
