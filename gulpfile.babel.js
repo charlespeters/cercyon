@@ -9,7 +9,7 @@ import atImport from 'postcss-import';
 import apply from 'postcss-apply';
 import reporter from 'postcss-reporter';
 import stylelint from 'stylelint';
-import jscs from 'gulp-jscs';
+import eslint from 'gulp-eslint';
 import imagemin from 'gulp-imagemin';
 import handlebars from 'gulp-compile-handlebars';
 import uglify from 'gulp-uglify';
@@ -27,11 +27,8 @@ const bs = browserSync.create();
 /////////////////////////
 
 const styles = function () {
-  const processors = [
-    atImport,
-    cssnext,
-    apply
-  ];
+  const processors = [ atImport, cssnext, apply ];
+
   return gulp.src(paths.css.src)
     .pipe(plumber())
     .pipe(postcss(processors))
@@ -62,7 +59,7 @@ function bundle() {
       }))
     .pipe(gulp.dest(paths.js.dest))
     .pipe(bs.stream());
-};
+}
 
 bundler.on('update', bundle);
 
@@ -85,7 +82,7 @@ const templates = () => {
     .pipe(plumber())
     .pipe(handlebars(hbsConfig, options))
     .pipe(rename({ extname: '.html' }))
-    .pipe(gulp.dest(paths.build + '/'))
+    .pipe(gulp.dest(`${paths.build}/`))
     .pipe(bs.stream({ once: true }));
 };
 
@@ -111,18 +108,14 @@ const images = () => {
 // Lint Styles
 const lintStyles = () => {
   return gulp.src(paths.css.all)
-    .pipe(postcss([
-      stylelint,
-      reporter({ clearMessages: true }),
-    ]));
+    .pipe(postcss([ stylelint, reporter({ clearMessages: true }) ]));
 };
 
 // Lint Scripts
 const lintScripts = () => {
   return gulp.src(paths.js.src)
-    .pipe(jscs())
-    .pipe(jscs.reporter())
-		.pipe(jscs.reporter('fail'));
+    .pipe(eslint())
+    .pipe(eslint.failAfterError());
 };
 
 const lint = gulp.series(lintStyles, lintScripts);
