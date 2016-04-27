@@ -1,18 +1,18 @@
 import gulp from 'gulp';
 import del from 'del';
-import handlebars from 'gulp-compile-handlebars';
 import rename from 'gulp-rename';
-import imagemin from 'gulp-imagemin';
-import size from 'gulp-size';
 import plumber from 'gulp-plumber';
+import size from 'gulp-size';
 import postcss from 'gulp-postcss';
 import cssnext from 'postcss-cssnext';
 import atImport from 'postcss-import';
 import apply from 'postcss-apply';
 import reporter from 'postcss-reporter';
 import stylelint from 'stylelint';
-import uglify from 'gulp-uglify';
 import jscs from 'gulp-jscs';
+import imagemin from 'gulp-imagemin';
+import handlebars from 'gulp-compile-handlebars';
+import uglify from 'gulp-uglify';
 import browserify from 'browserify';
 import babelify from 'babelify';
 import watchify from 'watchify';
@@ -23,26 +23,26 @@ import paths from './paths';
 
 const bs = browserSync.create();
 
-// Templates
+// Styles
 /////////////////////////
 
-gulp.task('handlebars', () => {
-  const options = {
-    ignorePartials: true,
-    batch: [paths.views.components],
-  };
-
-  const hbsConfig = {
-    base: './',
-  };
-
-  return gulp.src([paths.views.src, paths.views.ignore])
+const styles = function () {
+  const processors = [
+    atImport,
+    cssnext,
+    apply
+  ];
+  return gulp.src(paths.css.src)
     .pipe(plumber())
-    .pipe(handlebars(hbsConfig, options))
-    .pipe(rename({ extname: '.html' }))
-    .pipe(gulp.dest(paths.build + '/'))
+    .pipe(postcss(processors))
+    .pipe(size({
+      showFiles: true,
+      gzip: true,
+    }))
+    .pipe(rename('bundle.css'))
+    .pipe(gulp.dest(paths.css.dest))
     .pipe(bs.stream());
-});
+};
 
 // Scripts
 /////////////////////////
@@ -65,33 +65,34 @@ function bundle() {
 };
 
 bundler.on('update', bundle);
-gulp.task('scripts', bundle);
 
-// Styles
+const scripts = bundle;
+
+// Templates
 /////////////////////////
 
-gulp.task('styles', () => {
-  const processors = [
-    atImport,
-    cssnext,
-    apply
-  ];
-  return gulp.src(paths.css.src)
+const templates = () => {
+  const options = {
+    ignorePartials: true,
+    batch: [paths.views.components],
+  };
+
+  const hbsConfig = {
+    base: './',
+  };
+
+  return gulp.src([paths.views.src, paths.views.ignore])
     .pipe(plumber())
-    .pipe(postcss(processors))
-    .pipe(size({
-      showFiles: true,
-      gzip: true,
-    }))
-    .pipe(rename('bundle.css'))
-    .pipe(gulp.dest(paths.css.dest))
-    .pipe(bs.stream());
-});
+    .pipe(handlebars(hbsConfig, options))
+    .pipe(rename({ extname: '.html' }))
+    .pipe(gulp.dest(paths.build + '/'))
+    .pipe(bs.stream({ once: true }));
+};
 
 // Image Processing
 /////////////////////////
 
-gulp.task('images', () => {
+const images = () => {
   return gulp.src(paths.img.src)
     .pipe(imagemin({
       progressive: true,
@@ -102,59 +103,62 @@ gulp.task('images', () => {
       gzip: true,
     }))
     .pipe(gulp.dest(paths.img.dest));
-});
+};
 
 // Linting
 /////////////////////////
 
 // Lint Styles
-gulp.task('lint:css', () => {
+const lintStyles = () => {
   return gulp.src(paths.css.all)
     .pipe(postcss([
       stylelint,
       reporter({ clearMessages: true }),
     ]));
-});
+};
 
 // Lint Scripts
-gulp.task('lint:js', () => {
+const lintScripts = () => {
   return gulp.src(paths.js.src)
     .pipe(jscs())
     .pipe(jscs.reporter())
 		.pipe(jscs.reporter('fail'));
-});
+};
 
-gulp.task('lint', ['lint:css', 'lint:js']);
+const lint = gulp.series(lintStyles, lintScripts);
 
 // Clean Build Directory
 /////////////////////////
 
-gulp.task('clean', () => {
-  return del(paths.build);
-});
+const clean = () => del(paths.build);
 
 // Server
 /////////////////////////
 
-gulp.task('connect', () => {
-  return bs.init({
-    server: {
-      baseDir: paths.build,
-    },
-  });
+const connect = () => bs.init({
+  server: {
+    baseDir: paths.build,
+  },
 });
 
 // Watch
 /////////////////////////
 
-gulp.task('watch', () => {
-  gulp.watch([paths.css.all], ['styles']);
-  gulp.watch([paths.js.all], ['scripts']);
-  gulp.watch(paths.views.all, ['handlebars']);
-});
+const watch = () => {
+  gulp.watch(paths.css.all, styles);
+  gulp.watch(paths.js.all, scripts);
+  gulp.watch(paths.views.all, templates);
+  gulp.watch(paths.img.src, images);
+};
 
-// Default
+// Exports Functions as Proper Tasks
+
+export { clean, templates, styles, scripts, images, lint, watch, connect };
+
+// Default Tasks
 /////////////////////////
 
-gulp.task('build', ['handlebars', 'styles', 'scripts', 'images']);
-gulp.task('default', ['build', 'lint', 'watch', 'connect']);
+const build = gulp.series(clean, gulp.parallel(templates, styles, scripts, images));
+const all = gulp.series(build, gulp.parallel(lint, connect, watch));
+
+export default all;
