@@ -3,6 +3,9 @@ import del from 'del';
 import rename from 'gulp-rename';
 import plumber from 'gulp-plumber';
 import size from 'gulp-size';
+import svgmin from 'gulp-svgmin';
+import svgstore from 'gulp-svgstore';
+import cheerio from 'gulp-cheerio';
 import postcss from 'gulp-postcss';
 import cssnext from 'postcss-cssnext';
 import atImport from 'postcss-import';
@@ -102,6 +105,27 @@ const images = () => {
     .pipe(gulp.dest(paths.img.dest));
 };
 
+// Icons as SVG Sprite
+/////////////////////////
+
+const icons = () => {
+  return gulp.src(paths.icons.src)
+    .pipe(svgmin())
+    .pipe(svgstore({
+      fileName: 'icons.svg',
+      inlineSvg: true
+    }))
+    .pipe(cheerio({
+      run: ($, file) => {
+        $('svg').addClass('u-d-none');
+        $('[fill]').removeAttr('fill');
+      },
+      parserOptions: { xmlMode: true },
+    }))
+    .pipe(gulp.dest(paths.icons.dest))
+    .pipe(bs.stream());
+};
+
 // Linting
 /////////////////////////
 
@@ -146,12 +170,12 @@ const watch = () => {
 
 // Exports Functions as Proper Tasks
 
-export { clean, templates, styles, scripts, images, lint, watch, connect };
+export { clean, templates, styles, scripts, images, icons, lint, watch, connect };
 
 // Default Tasks
 /////////////////////////
 
-const build = gulp.series(clean, gulp.parallel(templates, styles, scripts, images));
+const build = gulp.series(clean, gulp.parallel(icons, images, templates, styles, scripts));
 const all = gulp.series(build, gulp.parallel(lint, connect, watch));
 
 export default all;

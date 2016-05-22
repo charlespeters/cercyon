@@ -4,6 +4,10 @@ const paths = {
     src: './assets/images/**/*',
     dest: './dist/assets/images/'
   },
+  icons: {
+    src: './assets/icons/**/*',
+    dest: './views/components/'
+  },
   views: {
     components: './views/components/',
     src: './views/**/*.hbs',
