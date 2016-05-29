@@ -168,14 +168,14 @@ const watch = () => {
   gulp.watch(paths.img.src, images);
 };
 
-// Exports Functions as Proper Tasks
-
-export { clean, templates, styles, scripts, images, icons, lint, watch, connect };
-
 // Default Tasks
 /////////////////////////
 
 const build = gulp.series(clean, gulp.parallel(icons, images, templates, styles, scripts));
 const all = gulp.series(build, gulp.parallel(lint, connect, watch));
+
+// Exports Functions as Proper Tasks
+
+export { build, clean, templates, styles, scripts, images, icons, lint, watch, connect };
 
 export default all;
