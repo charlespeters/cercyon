@@ -1,0 +1,28 @@
+{
+  "use": [
+    "postcss-import",
+    "postcss-cssnext",
+    "cssnano",
+    "postcss-reporter"
+  ],
+  "input": "./assets/styles/index.css",
+  "output": "./dist/bundle.css",
+  "local-plugins": true,
+  "postcss-cssnext": {
+    "warnForDuplicates": false,
+    "features": {
+      "rem": false
+    }
+  },
+  "cssnano": {
+    "mergeRules": false,
+    "discardEmpty": true,
+    "discardComments": {
+      "removeAll": true,
+      "removeAllButFirst": true
+    }
+  },
+  "postcss-reporter": {
+    "clearMessages": true
+  }
+}
