@@ -3,4 +3,9 @@
 
 :root {
   --headlines: 'Avenir', sans-serif;
+  --body-text: 'Charter', 'Georgia', serif;
+}
+
+body {
+  font-size: 125%;
 }

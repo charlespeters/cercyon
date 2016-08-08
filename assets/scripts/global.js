@@ -1,5 +1,7 @@
-const cercyon = window.cercyon || {};
+import module1 from './lib/module'
 
-cercyon.module1 = require('./lib/module');
+const cercyon = window.cercyon || {}
 
-window.cercyon = cercyon;
+cercyon.module1 = module1
+
+window.cercyon = cercyon
