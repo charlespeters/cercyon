@@ -4,20 +4,20 @@ Cercyon is a front-end boilerplate.
 
 ## Requirements
 
-This project requires Node 5.x.x or higher & npm 3.x.x ([installer font here](https://nodejs.org/en/) or use `brew install node`). You also need [Gulp.js](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md):
+This project requires Node 5.x.x or higher & npm 3.x.x ([installer found here](https://nodejs.org/en/) or use `brew install node`). This project uses NPM scripts you don't need any global depencies for this work, but I've found it's helpful to have them on your machine:
 
-```
-$ npm install -g gulp-cli
+```shell
+npm install -g browser-sync rollup standard watch rimraf svgo babel-cli imagemin-cli hbs-cli postcss-cli stylelint
 ```
 
 ## Highlights
 
 Cercyon doesn't have anything too special in it, just a common setup that's has my personal favorite defaults.
 
-- [Handlebars](http://handlebarsjs.com/): This project uses Handlebars templates as a static HTML generator.
+- [Handlebars](http://handlebarsjs.com/): This project uses Handlebars templates as a static HTML generator. And it uses some sample data that should you should customize to your needs.
 - [PostCSS](http://postcss.org/): To process the CSS this project uses PostCSS with a few choice plugins: [cssnext](http://cssnext.io/), [postcss-import](https://github.com/postcss/postcss-import), [postcss-apply](https://github.com/pascalduez/postcss-apply). Plus it imports my [Obsidian.css](https://github.com/obsidiancss/obsidian) project.
-- [Babel](http://babeljs.io/): To bundle the JavaScript this project uses Browserify and transpiles it with Babel (Presets: ES2015 & React).
-- Linters: Stylelint for CSS and ESLint for JS, there's nothing too nuts in there. It's included in the build process but it'd be cool to setup it up in your editor of choice ([Syntastic](https://github.com/scrooloose/syntastic) for Vim & [Linter](https://atom.io/packages/linter) for Atom).
+- [Babel](http://babeljs.io/): To bundle the JavaScript this project uses Browserify and transpiles it with Babel (Presets: ES2015).
+- Linters: Stylelint for CSS and [Standard.js](http://standardjs.com/) for JS, there's nothing too nuts in there. It's included in the build process but it'd be cool to setup it up in your editor of choice ([Syntastic](https://github.com/scrooloose/syntastic) for Vim & [Linter](https://atom.io/packages/linter) for Atom).
 
 ## Metalsmith
 
