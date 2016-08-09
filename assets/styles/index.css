@@ -2,7 +2,7 @@
 @import 'gradients';
 
 :root {
-  --headlines: 'Avenir', sans-serif;
+  --headlines: 'Helvetica Neue', sans-serif;
   --body-text: 'Charter', 'Georgia', serif;
 }
 
