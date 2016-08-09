@@ -7,25 +7,31 @@
     <title>Cercyon</title>
   </head>
   <body>
-    {{> header title="Cercyon" }}
-    <section class="bg-aqua-gradient u-c-offwhite">
+    {{> header info=feed }}
+    <section class="bg-orange-gradient u-offwhite">
       <article class="o-container--sm u-center u-py4 u-px3 u-mxa">
         <h1 class="h2 u-w300">Headline #1</h1>
         <div class="u-py3">
-          <a href="#" class="o-btn u-m2 u-w700">Button</a>
-          <a href="#" class="o-btn o-btn--outline u-c-offwhite u-ch-yellow u-m2 u-w700">Button</a>
+          <a href="#" class="c-btn u-m2 u-w700">Button</a>
+          <a href="#" class="c-btn c-btn--o u-offwhite u-m2 u-w700">Button</a>
         </div>
       </article>
     </section>
-    <section class="u-py4 u-px3 u-bkg-ltgray">
+    <section class="o-flex o-flex--wrap o-flex--j--c u-p3 bg-orange-gradient">
+      {{#each items}}
+        {{> card-ui post=this feed=feed }}
+      {{/each}}
+    </section>
+    <section class="u-py4 u-px3 u-bg--palegray">
       <div class="o-container--sm u-mxa">
-        <h4 class="h5 u-mb3 u-w400 u-caps u-lt-5">Another Headline</h4>
-        <p class="h6 u-system">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <h4 class="h4 u-mb3">Another Headline</h4>
+        <p class="u-system">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
       </div>
     </section>
     <section class="">
       <img src="images/313H.jpg" alt="" />
     </section>
+    {{> footer title='Cercyon'}}
     <script src="bundle.js" charset="utf-8"></script>
     <script type="text/javascript">
       cercyon.module1('No One', 'Can', 'Know');

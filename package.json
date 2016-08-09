@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npm-run-all clean --parallel watch server",
     "clean": "rimraf ./dist",
-    "build:hbs": "hbs --partial ./views/components/* --output ./dist/ -- ./views/index.hbs",
+    "build:hbs": "hbs -P './views/components/*' -D './data.json' -o ./dist -- ./views/index.hbs",
     "build:js": "rollup -c rollup.config.js -o ./dist/bundle.js",
     "build:css": "postcss -c .postcss.json",
     "build:images": "imagemin ./assets/images/* -o ./dist/images/",
