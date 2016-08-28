@@ -8,7 +8,7 @@
   </head>
   <body>
     {{> header info=feed }}
-    <section class="bg-orange-gradient u-offwhite">
+    <section class="u-bg--yellow u-offwhite">
       <article class="o-container--sm u-center u-py4 u-px3 u-mxa">
         <h1 class="h2 u-w300">Headline #1</h1>
         <div class="u-py3">
@@ -17,7 +17,7 @@
         </div>
       </article>
     </section>
-    <section class="o-flex o-flex--wrap o-flex--j--c u-p3 bg-orange-gradient">
+    <section class="o-flex o-flex--wrap o-flex--j--c u-p3 u-bg--bluegreen">
       {{#each items}}
         {{> card-ui post=this feed=feed }}
       {{/each}}
